@@ -4,17 +4,18 @@ import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 class ImageUploader extends StatefulWidget {
-  final File file;
-  final String bucket;
+  final File? file;
+  final String? bucket;
 
-  const ImageUploader({Key key, this.file, this.bucket}) : super(key: key);
+  const ImageUploader({required Key key, this.file, this.bucket})
+      : super(key: key);
   @override
   _ImageUploaderState createState() => _ImageUploaderState();
 }
 
 class _ImageUploaderState extends State<ImageUploader> {
   final FirebaseStorage _storage = FirebaseStorage.instance;
-  UploadTask _uploadTask;
+  UploadTask? _uploadTask;
   double progressPercent = 0.0;
   var imgURL;
   void startUpload() async {
@@ -22,10 +23,10 @@ class _ImageUploaderState extends State<ImageUploader> {
     var reference = _storage.ref().child(filePath);
 
     setState(() {
-      _uploadTask = reference.putFile(widget.file);
+      _uploadTask = reference.putFile(widget.file!);
     });
 
-    await _uploadTask.then((snapshot) {
+    await _uploadTask!.then((snapshot) {
       setState(() {
         imgURL = snapshot.ref.getDownloadURL();
       });
@@ -62,7 +63,7 @@ class _ImageUploaderState extends State<ImageUploader> {
             SizedBox(height: 20.0),
             Divider(),
             Image.file(
-              widget.file,
+              widget.file!,
               filterQuality: FilterQuality.high,
               cacheHeight: 300,
               cacheWidth: 300,
@@ -70,9 +71,9 @@ class _ImageUploaderState extends State<ImageUploader> {
             SizedBox(height: 20.0),
             _uploadTask != null
                 ? StreamBuilder(
-                    stream: _uploadTask.snapshotEvents,
+                    stream: _uploadTask!.snapshotEvents,
                     builder: (context, snapshot) {
-                      _uploadTask.snapshotEvents
+                      _uploadTask!.snapshotEvents
                           .listen((TaskSnapshot snapshot) {
                         setState(() {
                           progressPercent =

@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
 class InputField extends StatefulWidget {
-  final String hintText;
-  final IconData prefixIcon;
-  final String label;
-  final TextInputType type;
-  final TextEditingController controller;
-  final bool obscure;
+  final String? hintText;
+  final IconData? prefixIcon;
+  final String? label;
+  final TextInputType? type;
+  final TextEditingController? controller;
+  final bool? obscure;
 
   const InputField(
-      {Key key,
+      {Key? key,
       this.hintText,
       this.prefixIcon,
       this.label,
@@ -27,11 +27,11 @@ class _InputFieldState extends State<InputField> {
     return Padding(
       padding: const EdgeInsets.only(left: 10.0, right: 10.0, bottom: 17.0),
       child: TextFormField(
-        obscureText: widget.obscure,
+        obscureText: widget.obscure!,
         controller: widget.controller,
         keyboardType: widget.type,
         validator: (value) {
-          if (value.isEmpty) {
+          if (value!.isEmpty) {
             return 'Fill required fields please!';
           }
           return 'Valid';

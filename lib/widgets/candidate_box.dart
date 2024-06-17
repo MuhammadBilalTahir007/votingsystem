@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class CandidateBox extends StatelessWidget {
-  final String candidateImgURL;
-  final String candidateName;
-  final String candidateDesc;
-  final Function onTap;
-  final double height;
+  final String? candidateImgURL;
+  final String? candidateName;
+  final String? candidateDesc;
+  final void Function()? onTap;
+  final double? height;
 
-  const CandidateBox(
-      {Key key,
+  CandidateBox(
+      {Key? key,
       this.candidateImgURL,
       this.candidateName,
       this.candidateDesc,
@@ -30,7 +30,7 @@ class CandidateBox extends StatelessWidget {
             gradient: LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
-                colors: [Colors.indigo[200], Colors.blue[100]])),
+                colors: [Colors.indigo[200]!, Colors.blue[100]!])),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -39,10 +39,10 @@ class CandidateBox extends StatelessWidget {
               Center(
                 child: CircleAvatar(
                     radius: 40.0,
-                    backgroundImage: NetworkImage(candidateImgURL)),
+                    backgroundImage: NetworkImage(candidateImgURL!)),
               ),
               Center(
-                child: Text(candidateName,
+                child: Text(candidateName!,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
@@ -51,7 +51,7 @@ class CandidateBox extends StatelessWidget {
                         fontWeight: FontWeight.bold)),
               ),
               Text(
-                candidateDesc,
+                candidateDesc!,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),

@@ -15,9 +15,9 @@ class AddVoteOptionWidget extends StatefulWidget {
 
 class _AddVoteOptionWidgetState extends State<AddVoteOptionWidget> {
   var arguments = Get.arguments;
-  File _imagePicked;
+  File? _imagePicked;
   final FirebaseStorage _storage = FirebaseStorage.instance;
-  UploadTask _uploadTask;
+  UploadTask? _uploadTask;
   double progressPercent = 0.0;
   var imgURL;
   var futureImgURL;
@@ -32,8 +32,8 @@ class _AddVoteOptionWidgetState extends State<AddVoteOptionWidget> {
     var reference = _storage.ref().child(filePath);
 
     setState(() {
-      _uploadTask = reference.putFile(_imagePicked);
-      _uploadTask.then((snapshot) {
+      _uploadTask = reference.putFile(_imagePicked!);
+      _uploadTask!.then((snapshot) {
         setState(() {
           snapshot.ref.getDownloadURL().then((_imgURL) => imgURL = _imgURL);
           futureImgURL = Future.value(snapshot.ref.getDownloadURL());
@@ -44,7 +44,7 @@ class _AddVoteOptionWidgetState extends State<AddVoteOptionWidget> {
   }
 
   Future<void> pickImage(ImageSource source) async {
-    PickedFile selectedImage = await ImagePicker().getImage(
+    XFile? selectedImage = await ImagePicker().pickImage(
         source: source, maxHeight: 300.0, maxWidth: 300.0, imageQuality: 100);
     setState(() {
       if (selectedImage != null) {
@@ -61,7 +61,7 @@ class _AddVoteOptionWidgetState extends State<AddVoteOptionWidget> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Image.file(
-                        _imagePicked,
+                        _imagePicked!,
                         filterQuality: FilterQuality.high,
                         height: 250,
                         width: 250,
@@ -69,9 +69,9 @@ class _AddVoteOptionWidgetState extends State<AddVoteOptionWidget> {
                       SizedBox(height: 20.0),
                       _uploadTask != null
                           ? StreamBuilder(
-                              stream: _uploadTask.snapshotEvents,
+                              stream: _uploadTask!.snapshotEvents,
                               builder: (context, snapshot) {
-                                _uploadTask.snapshotEvents
+                                _uploadTask!.snapshotEvents
                                     .listen((TaskSnapshot snapshot) {
                                   setState(() {
                                     progressPercent =
@@ -197,7 +197,7 @@ class _AddVoteOptionWidgetState extends State<AddVoteOptionWidget> {
                   builder: (context, state) {
                     if (state.hasData) {
                       return CircleAvatar(
-                        backgroundImage: NetworkImage(state.data),
+                        backgroundImage: NetworkImage(state.data.toString()),
                         radius: 80.0,
                       );
                     }

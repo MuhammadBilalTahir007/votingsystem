@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
 class ActionBox extends StatelessWidget {
-  final IconData image;
-  final String action;
-  final String description;
+  final IconData? image;
+  final String? action;
+  final String? description;
 
   const ActionBox(
-      {Key key, @required this.image, @required this.action, this.description})
+      {Key? key, @required this.image, @required this.action, this.description})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -30,7 +30,7 @@ class ActionBox extends StatelessWidget {
             color: Colors.white,
           ),
           Text(
-            action,
+            action!,
             style: TextStyle(
                 fontSize: 23.0,
                 color: Colors.white,

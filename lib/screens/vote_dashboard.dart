@@ -6,7 +6,8 @@ import 'package:Electchain/screens/home_screen.dart';
 import 'package:Electchain/services/database.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:community_charts_flutter/community_charts_flutter.dart'
+    as charts;
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -67,7 +68,7 @@ class _VoteDashboardState extends State<VoteDashboard> {
     //   ];
     // }
     return Scaffold(
-      body: StreamBuilder(
+      body: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
         stream: _firestore
             .collection("users")
             .doc(Get.find<UserController>().user.id)
@@ -76,12 +77,12 @@ class _VoteDashboardState extends State<VoteDashboard> {
             .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            var election = snapshot.data.data();
-            var candidates = election['options'];
+            var election = snapshot.data;
+            var candidates = election!['options'];
 
             //Functions that will be in charge to generate charts data
             List<charts.Series<Vote, String>> _voteData() {
-              List<Vote> voteData = List<Vote>();
+              List<Vote>? voteData;
               if (candidates != null) {
                 for (var candidate in candidates) {
                   if (candidate != null &&
@@ -89,7 +90,7 @@ class _VoteDashboardState extends State<VoteDashboard> {
                       candidate['count'] != null) {
                     Vote vote = Vote(candidate['name'], candidate['count'],
                         _candidateColor());
-                    voteData.add(vote);
+                    voteData!.add(vote);
                   }
                 }
               }
@@ -101,20 +102,20 @@ class _VoteDashboardState extends State<VoteDashboard> {
                         charts.ColorUtil.fromDartColor(votes.voterColor),
                     domainFn: (Vote votes, _) => votes.voter,
                     measureFn: (Vote votes, _) => votes.voteCount,
-                    data: voteData)
+                    data: voteData!)
               ];
             }
 
             //End of chart data functions
 
             //Clling the function to initiate data
-            List<charts.Series> seriesList = _voteData();
+            List<charts.Series<dynamic, String>> seriesList = _voteData();
 
             //function to get the total votes count
             int totalVoteCount() {
               int totalcount = 0;
               for (var candidate in candidates) {
-                totalcount += candidate['count'];
+                totalcount += candidate['count'] as int;
               }
               return totalcount;
             }
@@ -306,7 +307,7 @@ Widget _StatsBox(IconData icon, String title, String count) {
     decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(18.0),
         gradient:
-            LinearGradient(colors: [Colors.indigo[300], Colors.blue[200]])),
+            LinearGradient(colors: [Colors.indigo[300]!, Colors.blue[200]!])),
   );
 }
 

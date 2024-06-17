@@ -13,7 +13,7 @@ class UserElections extends StatelessWidget {
   Widget build(BuildContext context) {
     Get.put(UserController());
     return Scaffold(
-      body: StreamBuilder(
+      body: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
         stream: _firestore
             .collection("users")
             .doc(Get.find<UserController>().user.id)
@@ -21,7 +21,7 @@ class UserElections extends StatelessWidget {
         // ignore: missing_return
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            var elections = snapshot.data.data()['owned_elections'];
+            var elections = snapshot.data!['owned_elections'];
             if (elections.length < 1) {
               return Center(
                 child: ListTile(
@@ -64,7 +64,7 @@ class UserElections extends StatelessWidget {
                 ),
                 SliverList(
                     delegate: SliverChildBuilderDelegate((context, index) {
-                  return StreamBuilder(
+                  return StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
                     stream: _firestore
                         .collection("users")
                         .doc(Get.find<UserController>().user.id)
@@ -72,13 +72,13 @@ class UserElections extends StatelessWidget {
                         .doc(elections[index])
                         .snapshots(),
                     // ignore: missing_return
-                    builder: (context, snap) {
-                      if (snap.hasData) {
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
                         return GestureDetector(
                           onTap: () {
                             print("working.......");
                             Get.to(VoteDashboard(),
-                                arguments: [snap.data.data()]);
+                                arguments: [snapshot.data!.data()]);
                           },
                           child: Padding(
                               padding: const EdgeInsets.only(
@@ -91,8 +91,8 @@ class UserElections extends StatelessWidget {
                                       gradient: LinearGradient(
                                         end: Alignment.bottomRight,
                                         colors: [
-                                          Colors.indigo[200],
-                                          Colors.blue[200]
+                                          Colors.indigo[200]!,
+                                          Colors.blue[200]!
                                         ],
                                       )),
                                   child: ListTile(
@@ -101,17 +101,17 @@ class UserElections extends StatelessWidget {
                                         backgroundImage: AssetImage(
                                             "assets/icons/logo.png")),
                                     trailing: Icon(Icons.chevron_right),
-                                    title: Text(snap.data.data()['name'] != null
-                                        ? snap.data.data()['name']
+                                    title: Text(snapshot.data!['name'] != null
+                                        ? snapshot.data!['name']
                                         : "Name"),
                                     subtitle:
-                                        Text(snap.data.data()['description']),
+                                        Text(snapshot.data!['description']),
                                     onTap: () {
                                       print("working.......");
-                                      Get.to(VoteDashboard(), arguments: [
-                                        Get.find<ElectionController>()
-                                            .fromDocumentSnapshot(snap.data)
-                                      ]);
+                                      Get.to(
+                                        VoteDashboard(),
+                                        arguments: snapshot.data,
+                                      );
                                     },
                                   ))),
                         );
@@ -123,8 +123,9 @@ class UserElections extends StatelessWidget {
                 }, childCount: elections.length))
               ],
             );
-          }
-          if (snapshot.connectionState == ConnectionState.waiting) {
+          } else if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: Text("Loading..."));
+          } else {
             return Center(child: Text("Loading..."));
           }
         },

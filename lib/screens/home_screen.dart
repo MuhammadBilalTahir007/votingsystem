@@ -159,14 +159,12 @@ class _HomeScreenState extends State<HomeScreen> {
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                           colors: [Colors.indigo, Colors.blue])),
-                  child: FlatButton.icon(
-                      height: 40.0,
+                  child: TextButton.icon(
                       onPressed: () async {
                         FirebaseFirestore _firestore =
                             FirebaseFirestore.instance;
-                        List<UserModel> allUsers = List<UserModel>();
-                        List<ElectionModel> allElections =
-                            List<ElectionModel>();
+                        List<UserModel>? allUsers;
+                        List<ElectionModel>? allElections;
                         var usersQuerySnap =
                             _firestore.collection("users").get();
                         usersQuerySnap.then((usersQuery) {
@@ -189,9 +187,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                           .fromDocumentSnapshot(_election))
                                   .toList();
                               userElections.forEach((element) {
-                                allElections.add(element);
+                                allElections!.add(element);
                               });
-                              allElections.forEach((election) {
+                              allElections!.forEach((election) {
                                 if (election.accessCode ==
                                     _electionAccessCodeController.text) {
                                   print(

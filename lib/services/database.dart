@@ -7,11 +7,11 @@ import 'package:get/get.dart';
 class DataBase {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final _uid = Get.find<UserController>().user.id;
-  List<UserModel> allUsers = List<UserModel>();
-  List<ElectionModel> allElections = List<ElectionModel>();
+  List<UserModel>? allUsers;
+  List<ElectionModel>? allElections;
   ElectionModel indexedElection = ElectionModel();
   ElectionController electionController = Get.put(ElectionController());
-  DocumentReference _electionRef;
+  DocumentReference? _electionRef;
   Future<bool> createNewUser(UserModel user) async {
     try {
       await _firestore.collection('users').doc(user.id).set({
@@ -22,18 +22,18 @@ class DataBase {
         "avatar": user.avatar
       });
       return true;
-    } catch (err) {
-      print(err.message);
+    } on FirebaseException catch (err) {
+      print(err.code);
       return false;
     }
   }
 
   Future<UserModel> getUser(String uid) async {
     try {
-      DocumentSnapshot doc =
+      DocumentSnapshot<Map<String, dynamic>> doc =
           await _firestore.collection('users').doc(uid).get();
       return Get.find<UserController>().fromDocumentSnapshot(doc);
-    } catch (err) {
+    } on FirebaseException catch (err) {
       print(err.message);
       rethrow;
     }
@@ -61,10 +61,10 @@ class DataBase {
 
         Get.to(AddCandidate(), arguments: [reference, election]);
       });
-      return _electionRef;
-    } catch (err) {
-      print('The error of election creation is ' + err.message);
-      return null;
+      return _electionRef!;
+    } on FirebaseException catch (err) {
+      print('The error of election creation is ' + err.message!);
+      throw err;
     }
   }
 
@@ -87,7 +87,7 @@ class DataBase {
         ])
       });
       return true;
-    } catch (err) {
+    } on FirebaseException catch (err) {
       print(err.message);
       Get.snackbar('ERROR',
           'Unexpected error occured while adding the candidate, Please try again');
@@ -123,7 +123,7 @@ class DataBase {
   Stream<ElectionModel> getElections(userID) {
     var snaps;
     _firestore.collection("users").doc(userID).snapshots().map((user) {
-      snaps = user.data()['owned_elections'].map((electionOwned) {
+      snaps = user.data()!['owned_elections'].map((electionOwned) {
         return _firestore
             .collection("users")
             .doc(userID)

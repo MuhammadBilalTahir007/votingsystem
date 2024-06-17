@@ -5,7 +5,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/widgets.dart';
 import 'dart:math';
 
-import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:community_charts_flutter/community_charts_flutter.dart'
+    as charts;
 
 class RealtimeResult extends StatefulWidget {
   @override
@@ -17,8 +18,8 @@ class _RealtimeResultState extends State<RealtimeResult> {
 
   int totalVoteCount() {
     int totalcount = 0;
-    for (var candidate in election.options) {
-      totalcount += candidate['count'];
+    for (var candidate in election.options!) {
+      totalcount += candidate['count'] as int;
     }
     return totalcount;
   }
@@ -50,15 +51,15 @@ class _RealtimeResultState extends State<RealtimeResult> {
 
   //Functions that will be in charge to generate charts data
   List<charts.Series<Vote, String>> _voteData() {
-    List<Vote> voteData = List<Vote>();
+    List<Vote>? voteData;
     if (election.options != null) {
-      for (var candidate in election.options) {
+      for (var candidate in election.options!) {
         if (candidate != null &&
             candidate['name'] != null &&
             candidate['count'] != null) {
           Vote vote =
               Vote(candidate['name'], candidate['count'], _candidateColor());
-          voteData.add(vote);
+          voteData!.add(vote);
         }
       }
     }
@@ -70,7 +71,7 @@ class _RealtimeResultState extends State<RealtimeResult> {
               charts.ColorUtil.fromDartColor(votes.voterColor),
           domainFn: (Vote votes, _) => votes.voter,
           measureFn: (Vote votes, _) => votes.voteCount,
-          data: voteData)
+          data: voteData!)
     ];
   }
 
@@ -79,7 +80,7 @@ class _RealtimeResultState extends State<RealtimeResult> {
   @override
   Widget build(BuildContext context) {
     //Calling the function to initiate data
-    List<charts.Series> seriesList = _voteData();
+    List<charts.Series<dynamic, String>> seriesList = _voteData();
     return Scaffold(
       body: CustomScrollView(
         slivers: [
@@ -101,7 +102,7 @@ class _RealtimeResultState extends State<RealtimeResult> {
               height: 140,
               child: ListView(
                   scrollDirection: Axis.horizontal,
-                  children: election.options.map((option) {
+                  children: election.options!.map((option) {
                     return Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: _buildCandidateResult(
@@ -181,7 +182,7 @@ Widget _buildCandidateResult(String image, String title, double count) {
     decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16.0),
         gradient:
-            LinearGradient(colors: [Colors.indigo[300], Colors.blue[200]])),
+            LinearGradient(colors: [Colors.indigo[300]!, Colors.blue[200]!])),
   );
 }
 

@@ -97,7 +97,7 @@ class _CastVoteState extends State<CastVote> {
                           borderRadius: BorderRadius.circular(12.0),
                           gradient: LinearGradient(
                             end: Alignment.bottomRight,
-                            colors: [Colors.indigo[200], Colors.blue[200]],
+                            colors: [Colors.indigo[200]!, Colors.blue[200]!],
                           )),
                       child: ListTile(
                         leading: CircleAvatar(
@@ -136,7 +136,7 @@ class _CastVoteState extends State<CastVote> {
                                         begin: Alignment.topLeft,
                                         end: Alignment.bottomRight,
                                         colors: [
-                                          Colors.indigo[300],
+                                          Colors.indigo[300]!,
                                           Colors.blue
                                         ])),
                                 child: Center(
@@ -184,7 +184,7 @@ class _CastVoteState extends State<CastVote> {
                                 ),
                               ),
                               actions: <Widget>[
-                                FlatButton(
+                                TextButton(
                                   child: Text("No"),
                                   onPressed: () {
                                     Get.back();
@@ -194,8 +194,8 @@ class _CastVoteState extends State<CastVote> {
                                     onPressed: () {
                                       FirebaseFirestore _firestore =
                                           FirebaseFirestore.instance;
-                                      List<ElectionModel> allElections =
-                                          List<ElectionModel>();
+                                      // List<ElectionModel> allElections =
+                                      //     List<ElectionModel>();
                                       var usersQuerySnap =
                                           _firestore.collection("users").get();
                                       usersQuerySnap.then((usersQuery) {
@@ -235,26 +235,26 @@ class _CastVoteState extends State<CastVote> {
                                                   "options":
                                                       FieldValue.arrayRemove([
                                                     {
-                                                      "avatar":
-                                                          element.options[index]
-                                                              ['avatar'],
-                                                      "name":
-                                                          element.options[index]
-                                                              ['name'],
-                                                      "description":
-                                                          element.options[index]
-                                                              ['description'],
-                                                      "count":
-                                                          element.options[index]
-                                                              ['count']
+                                                      "avatar": element
+                                                              .options![index]
+                                                          ['avatar'],
+                                                      "name": element
+                                                              .options![index]
+                                                          ['name'],
+                                                      "description": element
+                                                              .options![index]
+                                                          ['description'],
+                                                      "count": element
+                                                              .options![index]
+                                                          ['count']
                                                     }
                                                   ])
                                                 });
 
-                                                element.options[index]
+                                                element.options![index]
                                                     ['count']++;
                                                 var updatedOption =
-                                                    element.options[index];
+                                                    element.options![index];
 
                                                 _firestore
                                                     .collection("users")

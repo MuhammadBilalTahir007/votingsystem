@@ -2,12 +2,12 @@ import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserModel {
-  String avatar;
-  String id;
-  String name;
-  String phoneNumber;
-  String email;
-  List<dynamic> ownedElections;
+  String? avatar;
+  String? id;
+  String? name;
+  String? phoneNumber;
+  String? email;
+  List<dynamic>? ownedElections;
 
   UserModel(
       {this.avatar,

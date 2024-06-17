@@ -8,10 +8,10 @@ class AddCandidateBinding extends Bindings {
     getData() async {
       var data;
       await DataBase()
-          .candidatesStream(Get.find<UserController>().user.id,
+          .candidatesStream(Get.find<UserController>().user.id!,
               Get.arguments[0].id.toString())
           .then((election) {
-        data = election.data()['options'];
+        data = election['options'];
         Get.find<ElectionController>().currentElection.options = data;
       });
     }

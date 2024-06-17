@@ -6,10 +6,10 @@ import 'package:Electchain/controllers/controllers.dart';
 
 class AuthController extends GetxController {
   FirebaseAuth _auth = FirebaseAuth.instance;
-  Rx<User> _firebaseUser = Rx<User>();
+  Rx<User?> _firebaseUser = Rx<User?>(null);
   var usercontroller = Get.put(UserController());
 
-  String get user => _firebaseUser.value?.email;
+  String get user => _firebaseUser.value!.email!;
 
   @override
   // ignore: must_call_super
@@ -24,7 +24,7 @@ class AuthController extends GetxController {
 
       //Create a user in firestore
       UserModel _user = UserModel(
-          id: _authResult.user.uid,
+          id: _authResult.user!.uid,
           avatar: imgURL,
           name: name,
           phoneNumber: phoneNumber,
@@ -44,10 +44,10 @@ class AuthController extends GetxController {
           email: email, password: password);
 
       Get.find<UserController>().user =
-          await DataBase().getUser(_authResult.user.uid);
+          await DataBase().getUser(_authResult.user!.uid);
       Get.back();
-    } catch (err) {
-      Get.snackbar('Processing Error', err.message);
+    } on FirebaseAuthException catch (e) {
+      Get.snackbar('Processing Error', e.code);
     }
   }
 
@@ -55,8 +55,8 @@ class AuthController extends GetxController {
     try {
       _auth.signOut();
       Get.find<UserController>().clear();
-    } catch (err) {
-      Get.snackbar('Processing Error', err.message);
+    } on FirebaseAuthException catch (err) {
+      Get.snackbar('Processing Error', err.code);
     }
   }
 }

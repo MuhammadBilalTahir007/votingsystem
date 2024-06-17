@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:get/get.dart';
 
-ElectionController _electionController;
+ElectionController? _electionController;
 
 TextEditingController _electionNameController = TextEditingController();
 TextEditingController _electionDescriptionController = TextEditingController();
@@ -107,7 +107,7 @@ class NewVote extends StatelessWidget {
               decoration: BoxDecoration(
                   color: Colors.indigo[400],
                   borderRadius: BorderRadius.circular(18.0)),
-              child: FlatButton.icon(
+              child: TextButton.icon(
                 label: Text(
                   'Continue',
                   style: TextStyle(fontSize: 22.0, color: Colors.white),
@@ -118,7 +118,7 @@ class NewVote extends StatelessWidget {
                   color: Colors.white,
                 ),
                 onPressed: () async {
-                  await _electionController.createElection(
+                  await _electionController!.createElection(
                     _electionNameController.text,
                     _electionDescriptionController.text,
                     _electionStartDateController.text,

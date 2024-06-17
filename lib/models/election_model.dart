@@ -3,15 +3,15 @@ import 'package:Electchain/models/models.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ElectionModel {
-  String accessCode;
-  String name;
-  String description;
-  String startDate;
-  String endDate;
-  List<dynamic> options;
-  List<dynamic> voted;
-  String id;
-  String owner;
+  String? accessCode;
+  String? name;
+  String? description;
+  String? startDate;
+  String? endDate;
+  List<dynamic>? options;
+  List<dynamic>? voted;
+  String? id;
+  String? owner;
 
   ElectionModel(
       {this.name,

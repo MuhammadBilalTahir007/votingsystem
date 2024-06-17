@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 
 class VoteDate extends StatefulWidget {
-  final String title;
-  final String hint;
-  final IconData prefixIcon;
-  final TextEditingController controller;
+  final String? title;
+  final String? hint;
+  final IconData? prefixIcon;
+  final TextEditingController? controller;
 
   const VoteDate(
-      {Key key, this.title, this.hint, this.prefixIcon, this.controller})
+      {Key? key, this.title, this.hint, this.prefixIcon, this.controller})
       : super(key: key);
   @override
   _VoteDateState createState() => _VoteDateState();

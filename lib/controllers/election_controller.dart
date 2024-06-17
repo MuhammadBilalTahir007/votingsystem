@@ -29,18 +29,19 @@ class ElectionController extends GetxController {
     return true;
   }
 
-  ElectionModel fromDocumentSnapshot(DocumentSnapshot doc) {
+  ElectionModel fromDocumentSnapshot(
+      DocumentSnapshot<Map<String, dynamic>> doc) {
     ElectionModel _election = ElectionModel();
 
     _election.id = doc.id;
-    _election.accessCode = doc.data()['accessCode'];
-    _election.description = doc.data()['description'];
-    _election.endDate = doc.data()['endDate'];
-    _election.name = doc.data()['name'];
-    _election.options = doc.data()['options'];
+    _election.accessCode = doc.data()?['accessCode'];
+    _election.description = doc.data()?['description'];
+    _election.endDate = doc.data()?['endDate'];
+    _election.name = doc.data()?['name'];
+    _election.options = doc.data()?['options'];
     _election.startDate = doc['startDate'];
-    _election.voted = doc.data()['voted'];
-    _election.owner = doc.data()['owner'];
+    _election.voted = doc.data()?['voted'];
+    _election.owner = doc.data()?['owner'];
     return _election;
   }
 
@@ -78,7 +79,7 @@ class ElectionController extends GetxController {
       backgroundGradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [Colors.indigo[300], Colors.blue]),
+          colors: [Colors.indigo[300]!, Colors.blue]),
     );
   }
 

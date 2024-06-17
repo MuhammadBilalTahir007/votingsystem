@@ -8,7 +8,7 @@ import 'package:Electchain/services/database.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-ElectionModel election;
+ElectionModel? election;
 void getElection(userId, electionId) async {
   election = await DataBase().getElection(userId, electionId);
 }
@@ -35,16 +35,16 @@ class _CustomDrawerState extends State<CustomDrawer> {
         child: ListView(padding: EdgeInsets.all(0.0), children: <Widget>[
           UserAccountsDrawerHeader(
             accountName: Obx(
-              () => Text(Get.find<UserController>().user.name),
+              () => Text(Get.find<UserController>().user.name!),
             ),
             accountEmail: Obx(
-              () => Text(Get.find<UserController>().user.email,
+              () => Text(Get.find<UserController>().user.email!,
                   style: TextStyle(color: Colors.white54)),
             ),
             currentAccountPicture: CircleAvatar(
                 radius: 60.0,
                 backgroundImage:
-                    NetworkImage(Get.find<UserController>().user.avatar)),
+                    NetworkImage(Get.find<UserController>().user.avatar!)),
             otherAccountsPictures: <Widget>[
               Icon(
                 Icons.notification_important,

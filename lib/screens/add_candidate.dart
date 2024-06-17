@@ -66,7 +66,7 @@ class _AddCandidateState extends State<AddCandidate> {
         ),
         SliverPadding(
           padding: const EdgeInsets.all(20.0),
-          sliver: StreamBuilder(
+          sliver: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
             key: GlobalKey(debugLabel: "StreamKey"),
             stream: _firestore
                 .collection("users")
@@ -76,7 +76,7 @@ class _AddCandidateState extends State<AddCandidate> {
                 .snapshots(),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                var data = snapshot.data.data()['options'];
+                var data = snapshot.data!.data()!['options'];
                 return data.length < 1
                     ? SliverToBoxAdapter(
                         child: Column(children: [
@@ -128,7 +128,7 @@ class _AddCandidateState extends State<AddCandidate> {
             decoration: BoxDecoration(
                 color: Colors.indigo,
                 borderRadius: BorderRadius.circular(10.0)),
-            child: FlatButton.icon(
+            child: TextButton.icon(
                 onPressed: () {
                   Get.to(VoteDashboard(),
                       arguments: Get.arguments,
